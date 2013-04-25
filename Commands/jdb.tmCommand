@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveModifiedFiles</string>
+	<key>command</key>
+	<string>#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -KU
+require "#{ENV['TM_BUNDLE_SUPPORT']}/lib/android"
+require ENV['TM_SUPPORT_PATH'] + '/lib/escape.rb'
+
+def _p(str)
+  puts "&lt;p&gt;#{str}&lt;/p&gt;"
+end
+
+total = Android::Jdb.make ENV["TM_PROJECT_DIRECTORY"]
+manifest = Android::Manifest.dir ENV["TM_PROJECT_DIRECTORY"]
+
+puts "&lt;title&gt;Anrdoid Debug&lt;/title&gt;"
+_p "Created #{total} breakpoint#{"s" unless total == 1}"
+_p "Launching #{manifest.package} in debug mode"
+# launch the app with adb
+`adb shell am start -D -a android.intent.activity.MAIN -n #{manifest.package}/#{manifest.main_activity}`
+# forward the port
+port = `adb jdwp | tail -1`
+`adb forward tcp:7777 jdwp:#{port}`
+
+_p "Launching jdb in terminal"
+
+launch_jdb = &lt;&lt;-APPLESCRIPT
+    tell application "Terminal"
+      activate
+      do script "cd #{e_as(e_sh(ENV["TM_PROJECT_DIRECTORY"]))}; clear; jdb -sourcepath src -attach localhost:7777;"
+    end tell
+APPLESCRIPT
+
+open("|osascript", "w") {|io| io &lt;&lt; launch_jdb }
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>^@j</string>
+	<key>name</key>
+	<string>Debug Android</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>source.java</string>
+	<key>uuid</key>
+	<string>F3D9B0B8-D9A5-4D17-8D29-ED5495B6F2F6</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
