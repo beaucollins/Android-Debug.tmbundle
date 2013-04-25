@@ -43,7 +43,7 @@ open("|osascript", "w") {|io| io &lt;&lt; launch_jdb }
 	<key>keyEquivalent</key>
 	<string>^@j</string>
 	<key>name</key>
-	<string>Debug Android</string>
+	<string>Debug</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
