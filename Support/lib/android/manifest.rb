@@ -1,5 +1,8 @@
 require 'rexml/document'
 require 'rexml/xpath'
+require 'pathname'
+
+require ENV['TM_SUPPORT_PATH'] + '/lib/escape.rb'
 
 class Android::Manifest
   MANIFEST_NAME="AndroidManifest.xml"
