@@ -2,8 +2,6 @@
 
 Simple beginnings:
 
-One Command (Android Debug -> Debug)
-
- - Bookmarks in your src/ folder become breakpoints
- - Launches app and waits for debugger
- - Launches debugger in Terminal
+ - **Android Debug -> Debug Device**: Launches app on attached device and attaches jdb with bookmarks as breakpoints
+ - **Android Debug -> Debug Emulator** Launches app on emulator and attaches jdb with bookmarks as breakpoints
+ - **Android Debug -> Devices** Launches `android avd` to manage virtual devices
