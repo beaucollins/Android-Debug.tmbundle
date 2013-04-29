@@ -7,13 +7,12 @@ module Android::Jdb
     # find all bookmarks in src/
     breakpoints = 0
     src = dir + '/src'
-    bookmarks = `xattr -pr com.macromates.bookmarks #{src} 2> /dev/null`
-
+    bookmarks = `xattr -pr com.macromates.bookmarks #{src}`
     # convert bookmarks to .jdrbc
     line_reg = /([^:]+):[\s]+\(([^)]+)\)/
     package_reg = /package (.*);$/
 
-    File.open '.jdbrc', 'w' do |jdbrc|
+    File.open "#{dir}/.jdbrc", 'w' do |jdbrc|
       bookmarks.split("\n").each do |source_file|
         match = line_reg.match source_file
         lines = match[2].split(',').collect { |n| n.strip[1..-2] }
